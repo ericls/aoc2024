@@ -1,0 +1,113 @@
+#!/usr/bin/env python
+
+import argparse
+import os
+import re
+import subprocess
+import sys
+from collections import defaultdict
+from os import path
+from pathlib import Path
+
+here = path.dirname(__file__)
+days = set()
+day_parts = defaultdict(set)
+day_re = re.compile(r"^day(\d+)$")
+days_folder = Path(path.join(here, "days")).mkdir(parents=True, exist_ok=True)
+
+with os.scandir(path.join(here, "days")) as it:
+    for entry in it:
+        match = day_re.fullmatch(entry.name)
+        if not entry.is_dir() or not match:
+            continue
+        days.add(int(match[1]))
+
+part_re = re.compile(r"^part([12])$")
+
+for day in days:
+    with os.scandir(path.join(here, "days", f"day{day}")) as it:
+        for entry in it:
+            if not entry.is_file():
+                continue
+            name, ext = path.splitext(entry.name)
+            match = part_re.fullmatch(name)
+            if not match or ext != ".py":
+                continue
+            day_parts[day].add(int(match[1]))
+
+argparser = argparse.ArgumentParser()
+group = argparser.add_argument_group()
+argparser.add_argument(
+    "-d",
+    "--day",
+    type=int,
+    default=None,
+    choices=list(days),
+    metavar="N",
+    help="Which day's solutions to run. Omit to run all.",
+)
+argparser.add_argument(
+    "-p",
+    "--part",
+    type=int,
+    default=None,
+    choices=[1, 2],
+    metavar="N",
+    help="Which part of the day's solutions to run. Omit to run all.",
+)
+argparser.add_argument("--pypy", action="store_true", help="Run with pypy3")
+argparser.add_argument(
+    "-t",
+    "--test",
+    default=False,
+    help="Run the tests for the selected days and parts.",
+    action="store_true",
+)
+args = argparser.parse_args()
+
+if args.day is not None and args.part is not None:
+    solutions = [(args.day, args.part)]
+elif args.day is not None:
+    solutions = [(args.day, p) for p in day_parts[args.day]]
+else:
+    solutions = [
+        (day, part)
+        for day in sorted(days or [args.day])
+        for part in (sorted(day_parts[day]) if args.part is None else [args.part])
+    ]
+
+os.environ.setdefault("PYTHONPATH", here)
+
+if args.test:
+    import pytest
+
+    pytest_args = []
+    for day, part in solutions:
+        fname = path.join("days", f"day{day}", f"test_part{part}.py")
+        if path.exists(fname):
+            pytest_args.append(fname)
+
+    if pytest_args:
+        pytest.main(pytest_args)
+else:
+    start = True
+    for day, part in solutions:
+        if start:
+            start = False
+        else:
+            print()
+        print(f"Day {day} part {part}:\n")
+        py = "python"
+        if args.pypy:
+            py = "pypy3"
+        try:
+            subprocess.run(
+                [
+                    py,
+                    "-m",
+                    f"days.day{day}.part{part}",
+                ],
+                check=True,
+            )
+        except subprocess.CalledProcessError:
+            print(f"Day {day} part {part} failed", file=sys.stdout)
