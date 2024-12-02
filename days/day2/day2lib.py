@@ -15,16 +15,9 @@ def produce_ints(ints):
 
 
 def is_line_safe(ints):
-    trend = None
-    for a, b in pairwise(ints):
-        if abs(a - b) < 1 or abs(a - b) > 3:
-            return False
-        if b > a:
-            if trend == -1:
-                return False
-            trend = 1
-        elif b < a:
-            if trend == 1:
-                return False
-            trend = -1
-    return True
+    return (
+        all(1 <= abs(a - b) <= 3 for a, b in pairwise(ints))
+        and (
+            all(a < b for a, b in pairwise(ints)) or all(a > b for a, b in pairwise(ints))
+        )
+    )
