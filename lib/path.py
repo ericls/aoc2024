@@ -1,7 +1,7 @@
 # courtesy of sciyoshi
 import heapq
 import math
-from typing import Any, Dict, NamedTuple, ClassVar
+from typing import Any, ClassVar, Dict, NamedTuple
 
 
 class Pt(NamedTuple("Pt", [("x", int), ("y", int)])):
