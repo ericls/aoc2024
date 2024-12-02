@@ -15,9 +15,6 @@ def produce_ints(ints):
 
 
 def is_line_safe(ints):
-    return (
-        all(1 <= abs(a - b) <= 3 for a, b in pairwise(ints))
-        and (
-            all(a < b for a, b in pairwise(ints)) or all(a > b for a, b in pairwise(ints))
-        )
+    return all(1 <= abs(a - b) <= 3 for a, b in pairwise(ints)) and (
+        all(a < b for a, b in pairwise(ints)) or all(a > b for a, b in pairwise(ints))
     )
