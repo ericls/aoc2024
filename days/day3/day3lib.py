@@ -1,4 +1,5 @@
 import re
+
 from lib.input import get_input
 
 mul_regex = r"mul\(\d+,\d+\)"

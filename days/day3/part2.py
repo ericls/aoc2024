@@ -1,4 +1,5 @@
-from days.day3.day3lib import matches_2, eval_mul
+from days.day3.day3lib import eval_mul, matches_2
+
 
 def sol():
     total = 0
