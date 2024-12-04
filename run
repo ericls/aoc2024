@@ -63,6 +63,12 @@ argparser.add_argument(
     help="Run the tests for the selected days and parts.",
     action="store_true",
 )
+argparser.add_argument(
+    "-s",
+    default=False,
+    help="Run the tests with -s.",
+    action="store_true",
+)
 args = argparser.parse_args()
 
 if args.day is not None and args.part is not None:
@@ -88,6 +94,8 @@ if args.test:
             pytest_args.append(fname)
 
     if pytest_args:
+        if args.s:
+            pytest_args.append("-s")
         pytest.main(pytest_args)
 else:
     start = True
