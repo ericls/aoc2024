@@ -1,8 +1,8 @@
 # Just in case
 
-from enum import Enum, auto
 import re
 from collections import OrderedDict
+from enum import Enum, auto
 
 expr = """
 mul(mul(2, 3), mul(4, 5))
@@ -103,7 +103,6 @@ def tokenize(code):
 
 
 class ASTNode:
-
     def __init__(self, token=None):
         self.token = token
 
@@ -228,12 +227,13 @@ class Parser:
                 self.consume(TokenType.COMMA)
         self.consume(TokenType.RPAREN)
         if func_name.type in FUNC_ARITY and len(args) != FUNC_ARITY[func_name.type]:
-            raise ValueError(f"Function {func_name.value} expects {FUNC_ARITY[func_name.type]} arguments, got {len(args)}")
+            raise ValueError(
+                f"Function {func_name.value} expects {FUNC_ARITY[func_name.type]} arguments, got {len(args)}"
+            )
         return ASTNodeCall(func_name, ASTNodeName(func_name, func_name.value), args)
 
 
 class VM:
-
     def __init__(self, ignore_enabled_state=False):
         self.ignore_enabled_state = ignore_enabled_state
         self.value = 0
@@ -242,7 +242,7 @@ class VM:
 
     def mul(self, a, b):
         if self.enabled or self.ignore_enabled_state:
-            self.value += (a * b)
+            self.value += a * b
 
     def do(self):
         self.enabled = True
