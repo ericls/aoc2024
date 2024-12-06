@@ -1,5 +1,4 @@
-from days.day6.day6lib import R90R, Action, get_grid_and_start, place_brick, walk
-from lib.path import Pt
+from days.day6.day6lib import R90R, Action, get_grid_and_start, is_loop, walk
 
 
 def sol():
@@ -18,13 +17,12 @@ def sol():
         if pos in seen:
             continue
         seen.add(pos)
-        new_grid = place_brick(grid, pos)
+        new_grid = grid.place_brick(pos)
         direction = first_visit_direction[pos]
-        _, loop = walk(
+        loop = is_loop(
             new_grid,
             pos - direction,
             R90R[direction],
-            log_actions=False,
         )
         if loop:
             brick_places.add(pos)
