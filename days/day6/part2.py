@@ -10,22 +10,17 @@ def sol():
         if pt not in first_visit_direction:
             first_visit_direction[pt] = direction
 
-    brick_places = set()
-    seen = set()
+    c = 0
     for pos in first_visit_direction:
-        if pos in seen:
-            continue
-        seen.add(pos)
         new_grid = grid.place_brick(pos)
         direction = first_visit_direction[pos]
-        loop = is_loop(
+        if is_loop(
             new_grid,
             pos - direction,
             R90R[direction],
-        )
-        if loop:
-            brick_places.add(pos)
-    return len(brick_places)
+        ):
+            c += 1
+    return c
 
 
 print(sol())
