@@ -1,7 +1,6 @@
 from bisect import bisect, insort
 from collections import defaultdict
 from dataclasses import dataclass
-from enum import Enum, auto
 
 from lib.input import get_input_lines
 from lib.path import Pt
@@ -32,11 +31,6 @@ class Grid:
         return Grid(
             self.width, self.height, set(self.bricks) | {pos}, (new_by_x, new_by_y)
         )
-
-
-class Action(Enum):
-    VISIT = auto()
-    TURN = auto()
 
 
 def build_bricks_index(bricks):
@@ -98,28 +92,19 @@ def in_bound(grid, pt):
     return 0 <= pt.x < grid.width and 0 <= pt.y < grid.width
 
 
-def walk(
-    grid: Grid, starting_pos, starting_direction=UP, log_actions=True
-) -> tuple[list[tuple[Action, Pt, Pt]], bool]:
+def walk(grid: Grid, starting_pos, starting_direction=UP) -> list[tuple[Pt, Pt]]:
     current_pos = starting_pos
     current_direction = starting_direction
-    actions = [(Action.VISIT, current_pos, current_direction)]
-    turn_sets = set()
+    path = [(current_pos, current_direction)]
     while True:
         next_pos = current_pos + current_direction
         if not in_bound(grid, next_pos):
-            return actions, False
+            return path
         if next_pos in grid.bricks:
             current_direction = R90R[current_direction]
-            if log_actions:
-                actions.append((Action.TURN, current_pos, current_direction))
-            if (current_pos, current_direction) in turn_sets:
-                return actions, True
-            turn_sets.add((current_pos, current_direction))
         else:
             current_pos = next_pos
-            if log_actions:
-                actions.append((Action.VISIT, current_pos, current_direction))
+            path.append((current_pos, current_direction))
 
 
 def is_loop(grid: Grid, starting_pos, starting_direction):
@@ -128,10 +113,10 @@ def is_loop(grid: Grid, starting_pos, starting_direction):
     turns_set = set()
 
     while True:
-        next_turn_pos = next_brick(grid.bricks_index, current_pos, current_direction)
-        if next_turn_pos is None:
+        next_brick_pos = next_brick(grid.bricks_index, current_pos, current_direction)
+        if next_brick_pos is None:
             return False
-        current_pos = next_turn_pos - current_direction
+        current_pos = next_brick_pos - current_direction
         if (current_pos, current_direction) in turns_set:
             return True
         turns_set.add((current_pos, current_direction))

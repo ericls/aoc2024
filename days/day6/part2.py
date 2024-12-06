@@ -1,15 +1,14 @@
-from days.day6.day6lib import R90R, Action, get_grid_and_start, is_loop, walk
+from days.day6.day6lib import R90R, get_grid_and_start, is_loop, walk
 
 
 def sol():
     grid, start_pos = get_grid_and_start()
-    actions, _ = walk(grid, start_pos)
+    path = walk(grid, start_pos)
 
     first_visit_direction = {}
-    for a, pt, direction in actions:
-        if a == Action.VISIT:
-            if pt not in first_visit_direction:
-                first_visit_direction[pt] = direction
+    for pt, direction in path:
+        if pt not in first_visit_direction:
+            first_visit_direction[pt] = direction
 
     brick_places = set()
     seen = set()
