@@ -14,25 +14,20 @@ def sol():
 
     brick_places = set()
     seen = set()
-    for y in range(len(grid)):
-        for x in range(len(grid[0])):
-            pos = Pt(x, y)
-            if pos not in first_visit_direction:
-                continue
-            if pos in seen:
-                continue
-            seen.add(pos)
-            if grid[y][x] != "#":
-                new_grid = place_brick(grid, pos)
-                direction = first_visit_direction[pos]
-                _, loop = walk(
-                    new_grid,
-                    pos - direction,
-                    R90R[direction],
-                    log_actions=False,
-                )
-                if loop:
-                    brick_places.add(pos)
+    for pos in first_visit_direction:
+        if pos in seen:
+            continue
+        seen.add(pos)
+        new_grid = place_brick(grid, pos)
+        direction = first_visit_direction[pos]
+        _, loop = walk(
+            new_grid,
+            pos - direction,
+            R90R[direction],
+            log_actions=False,
+        )
+        if loop:
+            brick_places.add(pos)
     return len(brick_places)
 
 
