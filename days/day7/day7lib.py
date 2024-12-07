@@ -2,23 +2,19 @@ from lib.input import get_input
 
 
 def can_be_true(target, ints, use_combo=False):
-    if not ints:
-        return False
     if len(ints) == 1:
         return target == ints[0]
 
     a, b, *rest = ints
 
-    res_multi = can_be_true(target, [a * b] + rest, use_combo=use_combo)
-    res_add = can_be_true(target, [a + b] + rest, use_combo=use_combo)
-    if use_combo:
-        res_combo = can_be_true(
-            target, [int(str(a) + str(b))] + rest, use_combo=use_combo
+    return (
+        can_be_true(target, [a * b] + rest, use_combo=use_combo)
+        or can_be_true(target, [a + b] + rest, use_combo=use_combo)
+        or (
+            use_combo
+            and can_be_true(target, [int(str(a) + str(b))] + rest, use_combo=use_combo)
         )
-    else:
-        res_combo = False
-
-    return res_add or res_multi or res_combo
+    )
 
 
 def get_eqs():
