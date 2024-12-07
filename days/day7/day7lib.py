@@ -1,20 +1,28 @@
 from lib.input import get_input
 
 
+def concat_ints(a, b):
+    for scale in [10, 100, 1000]:
+        if b < scale:
+            return a * scale + b
+
+
 def can_be_true(target, ints, use_combo=False):
-    if len(ints) == 1:
-        return target == ints[0]
+    def inner(head, i):
+        if target < head:
+            return False
+        if i == len(ints):
+            return target == head
+        a = head
+        b = ints[i]
 
-    a, b, *rest = ints
-
-    return (
-        can_be_true(target, [a * b] + rest, use_combo=use_combo)
-        or can_be_true(target, [a + b] + rest, use_combo=use_combo)
-        or (
-            use_combo
-            and can_be_true(target, [int(str(a) + str(b))] + rest, use_combo=use_combo)
+        return (
+            inner(a * b, i + 1)
+            or inner(a + b, i + 1)
+            or (use_combo and inner(concat_ints(a, b), i + 1))
         )
-    )
+
+    return inner(ints[0], 1)
 
 
 def get_eqs():
