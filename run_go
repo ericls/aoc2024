@@ -1,0 +1,42 @@
+#!/usr/bin/env python3
+import argparse
+from pathlib import Path
+import subprocess
+
+HERE = Path(__file__).parent
+GO_CODE_PATH = HERE / "go_aoc2024"
+
+argparser = argparse.ArgumentParser()
+argparser.add_argument(
+    "-d",
+    "--day",
+    type=int,
+    default=None,
+    metavar="N",
+    help="Which day's solutions to run.",
+)
+args = argparser.parse_args()
+
+
+def ensure_input(day):
+    from lib.input import download_input
+
+    input_file_path = GO_CODE_PATH / f"day{day}" / "input.txt"
+    if input_file_path.exists():
+        return
+
+    input_file_path.parent.mkdir(parents=True, exist_ok=True)
+
+    with open(GO_CODE_PATH / f"day{day}" / "input.txt", "w") as f:
+        f.write(download_input(day))
+
+
+def run_go(day):
+    ensure_input(day)
+    subprocess.run(["go", "run", f"day{day}/main.go"], cwd=GO_CODE_PATH)
+
+
+if args.day is None:
+    raise ValueError("Must provide a day to run")
+
+run_go(args.day)

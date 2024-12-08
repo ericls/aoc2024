@@ -36,7 +36,6 @@ for day in days:
             day_parts[day].add(int(match[1]))
 
 argparser = argparse.ArgumentParser()
-group = argparser.add_argument_group()
 argparser.add_argument(
     "-d",
     "--day",
