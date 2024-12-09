@@ -4,7 +4,6 @@ import (
 	_ "embed"
 	"go_aoc2024/utils"
 	"sort"
-	"strconv"
 	"strings"
 )
 
@@ -18,38 +17,24 @@ func init() {
 	for y, line := range lines {
 		for x, c := range line {
 			if c == '^' {
-				startPos = Pt{x, y}
+				startPos = Pt{X: x, Y: y}
 			}
 		}
 	}
 	initGrid = newGrid(lines)
 }
 
-type Pt struct {
-	x, y int
-}
-
-func (p Pt) Add(q Pt) Pt {
-	return Pt{p.x + q.x, p.y + q.y}
-}
-
-func (p Pt) Sub(q Pt) Pt {
-	return Pt{p.x - q.x, p.y - q.y}
-}
-
-func (p Pt) String() string {
-	return "(" + strconv.Itoa(p.x) + ", " + strconv.Itoa(p.y) + ")"
-}
+type Pt = utils.Pt
 
 type PtDirection struct {
 	pt        Pt
 	direction Pt
 }
 
-var UP = Pt{0, -1}
-var DOWN = Pt{0, 1}
-var LEFT = Pt{-1, 0}
-var RIGHT = Pt{1, 0}
+var UP = Pt{X: 0, Y: -1}
+var DOWN = Pt{X: 0, Y: 1}
+var LEFT = Pt{X: -1, Y: 0}
+var RIGHT = Pt{X: 1, Y: 0}
 
 var R90R = map[Pt]Pt{
 	UP:    RIGHT,
@@ -84,9 +69,9 @@ func insort(a []int, x int) []int {
 func buildBricksIndex(bricks map[Pt]bool) *BrickIndex {
 	byX := map[int][]int{}
 	byY := map[int][]int{}
-	for pt, _ := range bricks {
-		byX[pt.x] = insort(byX[pt.x], pt.y)
-		byY[pt.y] = insort(byY[pt.y], pt.x)
+	for pt := range bricks {
+		byX[pt.X] = insort(byX[pt.X], pt.Y)
+		byY[pt.Y] = insort(byY[pt.Y], pt.X)
 	}
 	return &BrickIndex{byX, byY}
 }
@@ -96,7 +81,7 @@ func newGrid(lines []string) Grid {
 	for y, line := range lines {
 		for x, c := range line {
 			if c == '#' {
-				bricks[Pt{x, y}] = true
+				bricks[Pt{X: x, Y: y}] = true
 			}
 		}
 	}
@@ -117,35 +102,35 @@ func (bi *BrickIndex) withNewBrick(pt Pt) *BrickIndex {
 	for y, xs := range bi.byY {
 		byY[y] = append([]int{}, xs...)
 	}
-	byX[pt.x] = insort(byX[pt.x], pt.y)
-	byY[pt.y] = insort(byY[pt.y], pt.x)
+	byX[pt.X] = insort(byX[pt.X], pt.Y)
+	byY[pt.Y] = insort(byY[pt.Y], pt.X)
 	return &BrickIndex{byX, byY}
 }
 
 func (bi *BrickIndex) nextBrick(pos Pt, direction Pt) *Pt {
 	if direction == UP {
-		x := pos.x
-		index := sort.SearchInts(bi.byX[x], pos.y)
+		x := pos.X
+		index := sort.SearchInts(bi.byX[x], pos.Y)
 		if index > 0 {
-			return &Pt{x, bi.byX[x][index-1]}
+			return &Pt{X: x, Y: bi.byX[x][index-1]}
 		}
 	} else if direction == DOWN {
-		x := pos.x
-		index := sort.SearchInts(bi.byX[x], pos.y)
+		x := pos.X
+		index := sort.SearchInts(bi.byX[x], pos.Y)
 		if index < len(bi.byX[x]) {
-			return &Pt{x, bi.byX[x][index]}
+			return &Pt{X: x, Y: bi.byX[x][index]}
 		}
 	} else if direction == LEFT {
-		y := pos.y
-		index := sort.SearchInts(bi.byY[y], pos.x)
+		y := pos.Y
+		index := sort.SearchInts(bi.byY[y], pos.X)
 		if index > 0 {
-			return &Pt{bi.byY[y][index-1], y}
+			return &Pt{X: bi.byY[y][index-1], Y: y}
 		}
 	} else if direction == RIGHT {
-		y := pos.y
-		index := sort.SearchInts(bi.byY[y], pos.x)
+		y := pos.Y
+		index := sort.SearchInts(bi.byY[y], pos.X)
 		if index < len(bi.byY[y]) {
-			return &Pt{bi.byY[y][index], y}
+			return &Pt{X: bi.byY[y][index], Y: y}
 		}
 	}
 	return nil
@@ -166,7 +151,7 @@ func (g *Grid) withNewBrick(pt Pt) Grid {
 }
 
 func (g *Grid) isOutOfBound(pos Pt) bool {
-	if pos.x < 0 || pos.y < 0 || pos.x >= g.width-1 || pos.y >= g.height-1 {
+	if pos.X < 0 || pos.Y < 0 || pos.X >= g.width-1 || pos.Y >= g.height-1 {
 		return true
 	}
 	return false

@@ -65,6 +65,21 @@ func Counter[T comparable](list []T) map[T]int64 {
 	return counter
 }
 
+func Permutation2[T any](list []T) <-chan [2]T {
+	out := make(chan [2]T)
+	go func() {
+		for i := range list {
+			for j := range list {
+				if i != j {
+					out <- [2]T{list[i], list[j]}
+				}
+			}
+		}
+		close(out)
+	}()
+	return out
+}
+
 func MeasureRuntime[R any](f func() R) func() R {
 	return func() R {
 		start := time.Now()
