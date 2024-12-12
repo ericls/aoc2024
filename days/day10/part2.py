@@ -1,4 +1,5 @@
 from collections import defaultdict
+
 from days.day10.day10lib import build_grid
 from lib.path import Pt
 
