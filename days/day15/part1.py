@@ -59,7 +59,6 @@ def sol():
         # print(move, current_pt)
         # print_map()
 
-    print_map()
     v = 0
     for y, row in enumerate(map_):
         for x, cell in enumerate(row):

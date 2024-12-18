@@ -37,8 +37,6 @@ def sol():
             print("".join(row))
         print()
 
-    print_map(start)
-
     def find_box_in_direction(box_left, box_right, direction):
         res = [(box_left, box_right)]
         if direction == RIGHT:
@@ -154,7 +152,6 @@ def sol():
         elif map_[next_pt.y][next_pt.x] == "#":
             current_pt = current_pt
 
-    # print_map(current_pt)
     v = 0
     for y, row in enumerate(map_):
         for x, cell in enumerate(row):
