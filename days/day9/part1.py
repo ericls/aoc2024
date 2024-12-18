@@ -1,7 +1,9 @@
 from days.day9.day9lib import Disk
 from lib.input import get_input
+from lib.measure import print_runtime
 
 
+@print_runtime
 def sol():
     input = get_input()
     ints = [int(c) for c in input]

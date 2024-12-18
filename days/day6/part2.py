@@ -1,6 +1,8 @@
 from days.day6.day6lib import R90R, get_grid_and_start, is_loop, walk
+from lib.measure import print_runtime
 
 
+@print_runtime
 def sol():
     grid, start_pos = get_grid_and_start()
     path = walk(grid, start_pos)

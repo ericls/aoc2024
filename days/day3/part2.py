@@ -1,6 +1,8 @@
 from days.day3.day3lib import eval_mul, matches_2
+from lib.measure import print_runtime
 
 
+@print_runtime
 def sol():
     total = 0
     enabled = True

@@ -32,6 +32,10 @@ def build_reachable_map(grid):
     return reachable_map
 
 
+from lib.measure import print_runtime
+
+
+@print_runtime
 def sol():
     grid = build_grid()
     map_ = build_reachable_map(grid)

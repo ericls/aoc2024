@@ -12,6 +12,10 @@ R90R = {UP: RIGHT, RIGHT: DOWN, DOWN: LEFT, LEFT: UP}
 R90L = {UP: LEFT, LEFT: DOWN, DOWN: RIGHT, RIGHT: UP}
 
 
+from lib.measure import print_runtime
+
+
+@print_runtime
 def sol():
     input = get_input()
     grid = [list(row) for row in input.splitlines()]

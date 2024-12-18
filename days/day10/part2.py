@@ -25,6 +25,10 @@ def build_path_count_map(grid):
     return path_count_map, pt_by_num
 
 
+from lib.measure import print_runtime
+
+
+@print_runtime
 def sol():
     grid = build_grid()
     map_, pt_by_num = build_path_count_map(grid)

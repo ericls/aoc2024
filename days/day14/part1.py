@@ -1,7 +1,9 @@
 from lib.input import get_input
+from lib.measure import print_runtime
 from lib.path import Pt
 
 
+@print_runtime
 def sol():
     input = get_input()
     width = 101

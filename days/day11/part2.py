@@ -1,7 +1,9 @@
 from days.day11.day11lib import len_evolve_x_times
 from lib.input import get_input
+from lib.measure import print_runtime
 
 
+@print_runtime
 def sol():
     input = get_input()
     stones = [int(i) for i in input.split()]

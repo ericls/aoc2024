@@ -1,7 +1,9 @@
 from days.day13.day13lib import parse_input, solve_eq
 from lib.input import get_input
+from lib.measure import print_runtime
 
 
+@print_runtime
 def sol():
     input = get_input()
     consts = parse_input(input)

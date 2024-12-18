@@ -10,6 +10,10 @@ DOWN = Pt(0, 1)
 LEFT = Pt(-1, 0)
 
 
+from lib.measure import print_runtime
+
+
+@print_runtime
 def sol():
     input = get_input()
     h, w = 71, 71
