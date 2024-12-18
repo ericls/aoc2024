@@ -1,6 +1,8 @@
 import re
+
 from days.day17.day17lib import Machine
 from lib.input import get_input
+
 
 def sol():
     input = get_input()

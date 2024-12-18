@@ -110,6 +110,7 @@ class Machine:
 # output(b % 8)
 # repeat
 
+
 def run(input_a):
     a = input_a
     b = 0
@@ -126,6 +127,7 @@ def run(input_a):
         a >>= 3
         b ^= 6
         yield b % 8
+
 
 # a = ...XXXYYYZZZ
 # b = ZZZ
@@ -160,7 +162,7 @@ def run(input_a):
 # c = ...XXXYY
 # b = 100 ^ ...XXXYY
 # a = ...XXXYYY
-# b = 100 ^ ...XXXYY ^ 110 = 010 ^ ...XYY 
+# b = 100 ^ ...XXXYY ^ 110 = 010 ^ ...XYY
 
 # ZZZ = 010
 # b = 010

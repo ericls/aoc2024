@@ -1,6 +1,8 @@
 import re
+
 from days.day17.day17lib import Machine, run
 from lib.input import get_input
+
 
 def sol():
     input = get_input()
@@ -22,7 +24,7 @@ def sol():
         for d in d_maps[target]:
             if last_7_bits is None:
                 res.append(d)
-            elif d % 0b10000000== last_7_bits:
+            elif d % 0b10000000 == last_7_bits:
                 res.append(d)
         return res
 
@@ -53,7 +55,6 @@ def sol():
     numbers = [bits_to_number(r) for r in res]
     numbers = [n for n in numbers if list(run(n)) == program]
     return min(numbers)
-
 
 
 print(sol())
