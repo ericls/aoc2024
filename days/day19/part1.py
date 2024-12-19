@@ -16,13 +16,12 @@ def sol():
         if not rem:
             return True
         new_rems = []
-        for i in range(len(segments)):
-            seg = segments[i]
+        for seg in segments:
             if rem.startswith(seg):
                 new_rems.append(rem[len(seg) :])
         return any(validate(new_rem) for new_rem in new_rems)
 
-    return len([w for w in words if validate(w)])
+    return sum(1 for _ in (w for w in words if validate(w)))
 
 
 print(sol())

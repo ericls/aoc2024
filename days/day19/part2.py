@@ -16,11 +16,10 @@ def sol():
         if not rem:
             return 1
         new_rems = []
-        for i in range(len(segments)):
-            seg = segments[i]
+        for seg in segments:
             if rem.startswith(seg):
                 new_rems.append(rem[len(seg) :])
-        return sum([ways(new_rem) for new_rem in new_rems])
+        return sum(ways(new_rem) for new_rem in new_rems)
 
     sum_ways = 0
     for word in words:
