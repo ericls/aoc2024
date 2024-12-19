@@ -40,7 +40,7 @@ def sol():
                 return False
         return True
 
-    def all_unique(ps):
+    def all_unique(ps):  # this works, but writting it directly in the while loop
         return len(set(ps)) == len(ps)
 
     def detect_cluster(
@@ -68,17 +68,15 @@ def sol():
 
     i = 0
     while True:
-        after_move = []
+        seen = set()
         for p, v in zip(ps, vs):
-            after_move.append(wrap(p + (v * i)))
-        # if is_ps_symetric(after_move):
-        #     return i
-        if all_unique(after_move):
+            moved_p = wrap(p + (v * i))
+            if moved_p in seen:
+                break
+            seen.add(moved_p)
+        else:
             return i
-        # if any([cluster > 200 for cluster in detect_cluster(after_move)]):
-        #     return i
         i += 1
-        # print(i)
 
 
 print(sol())
