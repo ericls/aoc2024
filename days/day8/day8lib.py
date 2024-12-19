@@ -21,7 +21,7 @@ def get_map():
 
 
 def inbound(pos, width, height):
-    x, y = pos.x, pos.y
+    x, y = pos
     return 0 <= x < width and 0 <= y < height
 
 

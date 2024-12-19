@@ -17,6 +17,7 @@ python-dateutil = "^2.9.0.post0"
 python-dotenv = "^1.0.1"
 requests = "^2.32.3"
 pydash = "^8.0.4"
+more-itertools = "^10.5.0"
 
 [tool.poetry.dev-dependencies]
 black = "^24.10.0"

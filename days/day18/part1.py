@@ -1,16 +1,14 @@
 import re
-from itertools import batched
+from more_itertools import batched
 
 from lib.input import get_input
+from lib.measure import print_runtime
 from lib.path import Pt
 
 UP = Pt(0, -1)
 RIGHT = Pt(1, 0)
 DOWN = Pt(0, 1)
 LEFT = Pt(-1, 0)
-
-
-from lib.measure import print_runtime
 
 
 @print_runtime
@@ -20,7 +18,7 @@ def sol():
     ints = map(int, re.findall(r"\d+", input))
     start = Pt(0, 0)
     end = Pt(h - 1, w - 1)
-    bricks = [Pt(x, y) for x, y in batched(ints, 2)]
+    bricks = [Pt(x, y) for x, y in batched(ints, 2)] # type: ignore
     min_to_end = {end: 0}
 
     def inbound(pt: Pt):
